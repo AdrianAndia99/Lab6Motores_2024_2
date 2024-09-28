@@ -8,6 +8,9 @@ public class PlayerControler : MonoBehaviour
     public float speed = 5f;
     private float velocidadMovimiento = 3.0f;
     private float velocidadRotacion;
+    [SerializeField] private AudioClipSO clipSO1;
+    [SerializeField] private AudioClipSO clipSO2;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -33,14 +36,22 @@ public class PlayerControler : MonoBehaviour
 
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
-
+        if(other.gameObject.CompareTag("Room3"))
+        {
+            clipSO1.PlayLoop();
+        }
+        if (other.gameObject.CompareTag("Room4"))
+        {
+            clipSO2.PlayLoop();
+        }
     }
-
-    private void OnCollisionExit(Collision collision)
+    public void OnTriggerExit(Collider other)
     {
-
+        if (other.gameObject.CompareTag("Room3"))
+        {
+            clipSO1.StopPlay();
+        }
     }
 }

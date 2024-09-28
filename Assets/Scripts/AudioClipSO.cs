@@ -35,4 +35,8 @@ public class AudioClipSO : ScriptableObject
     {
         mixerSO.PlayLoop(null, this);
     }
+    public void StopPlay()
+    {
+        mixerSO.StopPlay(null, this);
+    }
 }

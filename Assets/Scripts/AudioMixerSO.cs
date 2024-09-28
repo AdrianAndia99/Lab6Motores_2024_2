@@ -153,4 +153,20 @@ public class AudioMixerSO : ScriptableObject
 
         return source;
     }
+    public AudioSource StopPlay(AudioSource audioSource = null, AudioClipSO audioClip = null)
+    {
+        if (audioClip.AudioClip == null)
+        {
+            Debug.LogWarning($"Missing sound clip for {name}");
+            return null;
+        }
+        AudioSource source = audioSource;
+        source.clip = audioClip.AudioClip;
+        source.outputAudioMixerGroup = groupMixer;
+        source.volume = audioClip.Volume;
+        source.pitch = audioClip.Pitch;
+
+        source.Stop();
+        return source;
+    }
 }
