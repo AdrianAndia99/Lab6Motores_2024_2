@@ -8,28 +8,44 @@ public class PlayerControler : MonoBehaviour
     public float speed = 5f;
     private float velocidadMovimiento = 3.0f;
     private float velocidadRotacion;
-    private float footstepTimer;
+    private AudioSource audioSource;
     private float footstepInterval = 0.5f;
+    private float footstepTimer;
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
-    [SerializeField] private AudioClipSO steps;
+    [SerializeField] private AudioClip footstepClip;
+
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
-
+    private void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.loop = false;
+    }
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
 
-        if (context.performed)
+    }
+    private void Update()
+    {
+        if (IsMoving())
         {
-            MovingSound();
+            if (Time.time >= footstepTimer)
+            {
+                PlayFootstepSound();
+                footstepTimer = Time.time + footstepInterval;
+            }
+        }
+        else
+        {
+            StopFootstepSound();
         }
     }
-
     void FixedUpdate()
     {
         Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y).normalized;
@@ -43,6 +59,13 @@ public class PlayerControler : MonoBehaviour
             Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
             rb.MovePosition(transform.position + moveDirection * velocidadMovimiento * Time.deltaTime);
 
+        }
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Portal"))
+        {
+            SceneManager.LoadScene("Game2");
         }
     }
     public void OnTriggerEnter(Collider other)
@@ -69,24 +92,23 @@ public class PlayerControler : MonoBehaviour
             clipSO2.StopPlay();
         }
     }
-
     private bool IsMoving()
     {
         return moveInput.magnitude > 0;
     }
-    private void MovingSound()
+    private void PlayFootstepSound()
     {
-        if (IsMoving())
+        if (!audioSource.isPlaying)
         {
-            if (Time.time >= footstepTimer)
-            {
-                steps.PlayOneShoot();
-                footstepTimer = Time.time + footstepInterval;
-            }
+            audioSource.clip = footstepClip;
+            audioSource.Play();
         }
-        else
+    }
+    private void StopFootstepSound()
+    {
+        if (audioSource.isPlaying)
         {
-            steps.StopPlay();
+            audioSource.Stop();
         }
     }
 }
