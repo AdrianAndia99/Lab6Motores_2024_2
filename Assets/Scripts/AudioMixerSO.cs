@@ -9,6 +9,7 @@ public class AudioMixerSO : ScriptableObject
     [SerializeField] private string volumeKey;
     [Range(1e-08f, 1)]
     [SerializeField] private float volumeValue;
+    private AudioSource currentSource;
 
     [HideInInspector]
     public bool IsMuted
@@ -151,22 +152,17 @@ public class AudioMixerSO : ScriptableObject
 
         source.Play();
 
+        currentSource = source;
+
         return source;
     }
-    public AudioSource StopPlay(AudioSource audioSource = null, AudioClipSO audioClip = null)
+    public void StopPlay(AudioSource audioSourceParam = null, AudioClipSO audioClip = null)
     {
-        if (audioClip.AudioClip == null)
+        if (currentSource != null && currentSource.isPlaying)
         {
-            Debug.LogWarning($"Missing sound clip for {name}");
-            return null;
+            currentSource.Stop();
+            Destroy(currentSource.gameObject);
+            currentSource = null;
         }
-        AudioSource source = audioSource;
-        source.clip = audioClip.AudioClip;
-        source.outputAudioMixerGroup = groupMixer;
-        source.volume = audioClip.Volume;
-        source.pitch = audioClip.Pitch;
-
-        source.Stop();
-        return source;
     }
 }

@@ -8,6 +8,8 @@ TagManager:
   - Room2
   - Room3
   - Room4
+  - Door
+  - Portal
   layers:
   - Default
   - TransparentFX

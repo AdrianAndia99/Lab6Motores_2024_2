@@ -8,8 +8,12 @@ public class PlayerControler : MonoBehaviour
     public float speed = 5f;
     private float velocidadMovimiento = 3.0f;
     private float velocidadRotacion;
+    private float footstepTimer;
+    private float footstepInterval = 0.5f;
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
+    [SerializeField] private AudioClipSO steps;
+
 
     private void Awake()
     {
@@ -19,6 +23,11 @@ public class PlayerControler : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+
+        if (context.performed)
+        {
+            MovingSound();
+        }
     }
 
     void FixedUpdate()
@@ -38,7 +47,15 @@ public class PlayerControler : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Room3"))
+        if (other.gameObject.CompareTag("Room1"))
+        {
+            clipSO1.PlayLoop();
+        }
+        if (other.gameObject.CompareTag("Room2"))
+        {
+            clipSO2.PlayLoop();
+        }
+        if (other.gameObject.CompareTag("Room3"))
         {
             clipSO1.PlayLoop();
         }
@@ -46,12 +63,30 @@ public class PlayerControler : MonoBehaviour
         {
             clipSO2.PlayLoop();
         }
-    }
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Room3"))
+        if (other.gameObject.CompareTag("Door"))
         {
             clipSO1.StopPlay();
+            clipSO2.StopPlay();
+        }
+    }
+
+    private bool IsMoving()
+    {
+        return moveInput.magnitude > 0;
+    }
+    private void MovingSound()
+    {
+        if (IsMoving())
+        {
+            if (Time.time >= footstepTimer)
+            {
+                steps.PlayOneShoot();
+                footstepTimer = Time.time + footstepInterval;
+            }
+        }
+        else
+        {
+            steps.StopPlay();
         }
     }
 }
