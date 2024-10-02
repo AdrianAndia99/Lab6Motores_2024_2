@@ -14,7 +14,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
     [SerializeField] private AudioClip footstepClip;
-
+    public NPCpatrol npc;
 
 
     private void Awake()
@@ -30,6 +30,13 @@ public class PlayerControler : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
 
+    }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            npc.MoveAndText();
+        }
     }
     private void Update()
     {
