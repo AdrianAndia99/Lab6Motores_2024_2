@@ -4,7 +4,7 @@ using UnityEngine;
 public class NPCpatrol : MonoBehaviour
 {
     public Transform[] patrolPoints;
-    public float movementSpeed = 3f;
+    public float movementSpeed;
     private int currentPatrolIndex = 0;
     private Animator animator;
     [SerializeField] private GameObject textContainer;
