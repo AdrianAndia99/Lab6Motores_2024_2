@@ -10,6 +10,7 @@ TagManager:
   - Room4
   - Door
   - Portal
+  - npc
   layers:
   - Default
   - TransparentFX

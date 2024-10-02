@@ -14,7 +14,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
     [SerializeField] private AudioClip footstepClip;
-    public NPCpatrol npc;
+    private NPCpatrol npc;
 
 
     private void Awake()
@@ -33,7 +33,7 @@ public class PlayerControler : MonoBehaviour
     }
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (npc != null)
         {
             npc.MoveAndText();
         }
@@ -97,6 +97,14 @@ public class PlayerControler : MonoBehaviour
         {
             clipSO1.StopPlay();
             clipSO2.StopPlay();
+        }
+        if(other.tag == "npc")
+        {
+            npc = other.GetComponent<NPCpatrol>();
+            if (Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                OnInteract(new InputAction.CallbackContext());
+            }
         }
     }
     private bool IsMoving()
