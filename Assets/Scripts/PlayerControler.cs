@@ -13,7 +13,7 @@ public class PlayerControler : MonoBehaviour
     private float footstepTimer;
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
-    [SerializeField] private AudioClip footstepClip;
+    [SerializeField] private AudioSource footstepClip;
     private NPCpatrol npc;
 
 
@@ -113,17 +113,16 @@ public class PlayerControler : MonoBehaviour
     }
     private void PlayFootstepSound()
     {
-        if (!audioSource.isPlaying)
+        if (!footstepClip.isPlaying)
         {
-            audioSource.clip = footstepClip;
-            audioSource.Play();
+            footstepClip.Play();
         }
     }
     private void StopFootstepSound()
     {
-        if (audioSource.isPlaying)
+        if (footstepClip.isPlaying)
         {
-            audioSource.Stop();
+            footstepClip.Stop();
         }
     }
 }
