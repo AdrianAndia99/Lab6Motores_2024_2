@@ -14,6 +14,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] private AudioClipSO clipSO1;
     [SerializeField] private AudioClipSO clipSO2;
     [SerializeField] private AudioSource footstepClip;
+    [SerializeField] private Fade fade;
     private NPCpatrol npc;
 
 
@@ -79,6 +80,7 @@ public class PlayerControler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Room1"))
         {
+
             clipSO1.PlayLoop();
         }
         if (other.gameObject.CompareTag("Room2"))
@@ -95,6 +97,7 @@ public class PlayerControler : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Door"))
         {
+            FadeIn();
             clipSO1.StopPlay();
             clipSO2.StopPlay();
         }
@@ -125,4 +128,13 @@ public class PlayerControler : MonoBehaviour
             footstepClip.Stop();
         }
     }
+    public void FadeIn()
+    {
+        fade.StartFadeIn();
+    }
+    public void FadeOut()
+    {
+        fade.StartFadeIn();
+    }
+
 }
