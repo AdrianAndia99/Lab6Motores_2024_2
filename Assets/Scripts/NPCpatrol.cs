@@ -56,6 +56,7 @@ public class NPCpatrol : MonoBehaviour
         isMoving = false;
         animator.SetBool("isWalk", false);
         textContainer.SetActive(true);
+        interactText.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
